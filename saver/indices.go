@@ -59,7 +59,3 @@ func SaveIXIC() error {
 	}
 	return indexData.GetorCreate()
 }
-
-// func SaveForexDaily() {
-
-// }
