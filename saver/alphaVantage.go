@@ -2,8 +2,6 @@ package saver
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -25,24 +23,28 @@ type AvResponse struct {
 	} `json:"Time Series (Daily)"`
 }
 
-var updatePriceQueryAVFunc string = "TIME_SERIES_DAILY"
+var updatePriceQueryAVFunc string = "TIME_SERIES_DAILY_ADJUSTED"
 var symbolSuffix string = ".BSE"
 
-func fetchBSEData(symbol string) {
+func FetchAVData(symbol string) (AvResponse, error) {
 	symbolUppr := strings.ToUpper(symbol)
-	finalUrl := AV_BaseUrl + updatePriceQueryAVFunc + "&symbol=" + symbolUppr + symbolSuffix + "&outputsize=compact" + "&apikey=" + AV_KEY
-	log.Println(finalUrl)
+	finalUrl := AV_BaseUrl + updatePriceQueryAVFunc + "&symbol=" + symbolUppr + "&outputsize=compact" + "&apikey=" + AV_KEY
 	resp, err := http.Get(finalUrl)
 	if err != nil {
-		log.Printf(err.Error())
-
+		return AvResponse{}, err
 	}
 	defer resp.Body.Close()
-	log.Printf(resp.Status)
+
 	var avResponse AvResponse
 	json.NewDecoder(resp.Body).Decode(&avResponse)
-	for k, v := range avResponse.TimeSeries {
-		fmt.Println(k, v.Close)
-	}
+	return avResponse, nil
+}
 
+func FetchBSEData(symbol string) (AvResponse, error) {
+	symbolUppr := strings.ToUpper(symbol)
+	resp, err := FetchAVData(symbolUppr + symbolSuffix)
+	if err != nil {
+		return AvResponse{}, err
+	}
+	return resp, nil
 }

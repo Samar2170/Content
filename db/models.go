@@ -8,12 +8,14 @@ import (
 var db *gorm.DB
 
 func Connect() {
-	dsn := "host=localhost user=postgres password=postgres dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+
 	var err error
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err = gorm.Open(postgres.Open(DBURI), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
+	db.AutoMigrate(&Index{}, &IndexData{})
+	db.AutoMigrate(&ForexPair{}, &ForexData{})
 }
 
 func init() {
