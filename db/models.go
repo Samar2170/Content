@@ -17,7 +17,3 @@ func Connect() {
 	db.AutoMigrate(&Index{}, &IndexData{})
 	db.AutoMigrate(&ForexPair{}, &ForexData{})
 }
-
-func init() {
-	Connect()
-}
