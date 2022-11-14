@@ -1,7 +1,8 @@
 package main
 
 import (
-	"fmt"
+	"log"
+	"os"
 	"time"
 
 	"github.com/go-co-op/gocron"
@@ -15,11 +16,19 @@ func saveUSIndices() {
 }
 
 func printTime() {
-	fmt.Println(time.Now())
+	log.Println(time.Now())
 
 }
 
 func main() {
+	LOGFILE := "/tmp/Content.log"
+	logFile, err := os.OpenFile(LOGFILE, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("error opening file: %v", err)
+	}
+	defer logFile.Close()
+	log.SetOutput(logFile)
+
 	s := gocron.NewScheduler(time.UTC)
 
 	s.Every(1).Day().At(DJ_ClosingTime).Do(func() {
