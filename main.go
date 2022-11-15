@@ -34,6 +34,9 @@ func main() {
 	s.Every(1).Day().At(DJ_ClosingTime).Do(func() {
 		saveUSIndices()
 	})
+	s.Every(1).Day().At(NIFTY_ClosingTime).Do(func() {
+		saver.SaveInvestingIndices()
+	})
 	s.Every(1).Day().At(FOREX_ARBIT_TIME).Do(func() {
 		saver.SaveForexPairs()
 	})
@@ -51,4 +54,5 @@ const (
 	NYSE_ClosingTime   = "21:01:00"
 	NASDAQ_ClosingTime = "21:01:00"
 	FOREX_ARBIT_TIME   = "22:01:00"
+	NIFTY_ClosingTime  = "10:01:00"
 )

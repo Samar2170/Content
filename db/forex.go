@@ -18,7 +18,7 @@ type ForexData struct {
 	*gorm.Model
 	ForexPairId uint
 	ForexPair   ForexPair `gorm:"foreignKey:ForexPairId"`
-	Date        time.Time
+	Date        time.Time `gorm:"Index"`
 	Close       float64
 }
 

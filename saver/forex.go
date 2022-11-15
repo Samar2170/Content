@@ -1,7 +1,7 @@
 package saver
 
 import (
-	"fmt"
+	"log"
 	"time"
 
 	"github.com/samar2170/Content/db"
@@ -13,12 +13,10 @@ func SaveForexPairs() {
 		return
 	}
 	for _, index := range indices {
-		// fmt.Println(index)
-		// fmt.Println(index.Id)
 
 		twdresp, err := getTWDExchangeRate(index.Symbol)
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 			continue
 		}
 		datetime := time.Unix(int64(twdresp.Timestamp), 0)
@@ -29,7 +27,7 @@ func SaveForexPairs() {
 		}
 		err = indexData.GetorCreate()
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 		}
 		time.Sleep(25 * time.Second)
 	}
